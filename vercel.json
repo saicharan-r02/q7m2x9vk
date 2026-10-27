@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://gridbricks-wind-forecast-api.onrender.com/api/health"
+      "destination": "https://gridbricks-wind-forecast-api.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",
