@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: gridbricks-wind-forecast-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: CORS_ORIGINS
+        sync: false
+      - key: CACHE_TTL_SECONDS
+        value: "600"
+      - key: ELEXON_API_BASE
+        value: https://data.elexon.co.uk/bmrs/api/v1/

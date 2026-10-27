@@ -1,17 +1,14 @@
-
 import json
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-
+DATA_DIR = Path(__file__).resolve().parents[1]/"data"
 
 def inspect_file(filename: str, required_fields: list[str]) -> None:
-    path = DATA_DIR / filename
+    path=DATA_DIR/filename
 
-    with path.open("r", encoding="utf-8") as file:
-        records = json.load(file)
+    with path.open("r",encoding="utf-8") as file:
+        records=json.load(file)
 
-    print(f"\n{'=' * 55}")
     print(f"File: {filename}")
     print(f"Records: {len(records):,}")
 
@@ -19,22 +16,21 @@ def inspect_file(filename: str, required_fields: list[str]) -> None:
         print("ERROR: Dataset is empty.")
         return
 
-    print("Fields:", ", ".join(records[0].keys()))
+    print("Fields:",", ".join(records[0].keys()))
 
     for field in required_fields:
-        missing = sum(
+        missing=sum(
             record.get(field) is None
             for record in records
         )
         print(f"Missing {field}: {missing:,}")
 
-    timestamps = [
+    timestamps=[
         record["startTime"]
         for record in records
         if record.get("startTime")
     ]
-
-    publications = [
+    publications=[
         record["publishTime"]
         for record in records
         if record.get("publishTime")
@@ -46,23 +42,17 @@ def inspect_file(filename: str, required_fields: list[str]) -> None:
     if publications:
         print(
             "Publication range:",
-            f"{min(publications)} to {max(publications)}",
+            f"{min(publications)} to {max(publications)}"
         )
 
-    print("Sample record:", records[0])
-
+    print("Sample record:",records[0])
 
 def main() -> None:
-    inspect_file(
-        "actual_wind.json",
-        ["startTime", "publishTime", "generation", "fuelType"],
-    )
-
-    inspect_file(
-        "wind_forecasts.json",
-        ["startTime", "publishTime", "generation"],
-    )
+    inspect_file("actual_wind.json",["startTime", "publishTime", "generation", "fuelType"])
 
 
-if __name__ == "__main__":
+    inspect_file("wind_forecasts.json",["startTime","publishTime","generation"])
+
+
+if __name__=="__main__":
     main()

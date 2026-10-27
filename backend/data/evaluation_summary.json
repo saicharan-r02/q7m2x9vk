@@ -1,0 +1,17 @@
+{
+  "analysis": "January 2026 decision dates; next-day delivery assumption",
+  "cutoff_utc": "09:50:00",
+  "cutoff_note": "Configurable demonstration assumption; not a client-confirmed market deadline.",
+  "actual_hourly_intervals": 744,
+  "incomplete_actual_hours_excluded": 0,
+  "matched_hourly_intervals": 744,
+  "hours_without_eligible_forecast": 0,
+  "coverage_pct": 100.0,
+  "forecast_records_outside_actual_window": 824,
+  "duplicate_forecast_interval_publication_keys": 0,
+  "mae_mw": 2013.01,
+  "rmse_mw": 2505.94,
+  "bias_mw": 1729.93,
+  "wape_pct": 17.84,
+  "error_convention": "forecast minus actual; positive means overforecast"
+}
