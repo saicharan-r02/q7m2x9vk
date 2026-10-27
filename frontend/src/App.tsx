@@ -89,7 +89,12 @@ export default function App() {
   }, [loadData]);
 
   const selectedPeriods = useMemo(() => (data?.periods || []).filter((row) => row.delivery_date === selectedDate), [data, selectedDate]);
-  const selectedDaily = useMemo(() => data?.daily.find((row) => row.delivery_date === selectedDate), [data, selectedDate]);
+  const selectedDaily = useMemo(
+  () => (data?.daily ?? []).find(
+    (row) => row.delivery_date === selectedDate
+  ),
+  [data, selectedDate]
+);
   const selectedDecisionDate = selectedDaily?.decision_date || '';
   const chartByDay = useMemo(() => (data?.daily || []).map((row) => ({
     ...row,
