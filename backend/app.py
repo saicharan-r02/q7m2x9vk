@@ -3,34 +3,32 @@ import csv
 import json
 import math
 from collections import defaultdict
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date,datetime,time,timedelta,timezone
 from pathlib import Path
-
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI,HTTPException,Query
 from fastapi.middleware.cors import CORSMiddleware
 
-BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
+BASE_DIR=Path(__file__).resolve().parent
+DATA_DIR=BASE_DIR / "data"
 
-app = FastAPI(
+app=FastAPI(
     title="Gridbricks Wind Intelligence API",
     description=(
         "Decision-time wind forecast evaluation using Elexon data."
     ),
-    version="1.0.0",
+    version="1.0.0"
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5173"
     ],
     allow_credentials=False,
     allow_methods=["GET"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
-
 
 def parse_utc(value: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
