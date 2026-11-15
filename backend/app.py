@@ -88,7 +88,7 @@ def calculate_metrics(rows: list[dict]) -> dict:
             "mae_mw": None,
             "rmse_mw": None,
             "bias_mw": None,
-            "wape_pct": None,
+            "wape_pct": None
         }
 
     errors = [row["error_mw"] for row in rows]
@@ -109,7 +109,7 @@ def calculate_metrics(rows: list[dict]) -> dict:
             round(sum(absolute_errors) / actual_total * 100, 2)
             if actual_total != 0
             else None
-        ),
+        )
     }
 
 
@@ -118,7 +118,7 @@ def root():
     return {
         "name": "Gridbricks Wind Intelligence API",
         "docs": "/docs",
-        "health": "/api/health",
+        "health": "/api/health"
     }
 
 
@@ -128,7 +128,7 @@ def health():
         "actual_wind.json",
         "wind_forecasts.json",
         "evaluation.csv",
-        "evaluation_summary.json",
+        "evaluation_summary.json"
     ]
 
     status = {
@@ -138,7 +138,7 @@ def health():
 
     return {
         "status": "ok" if all(status.values()) else "not_ready",
-        "files": status,
+        "files": status
     }
 
 
@@ -149,7 +149,7 @@ def summary():
     if not isinstance(data, dict):
         raise HTTPException(
             status_code=500,
-            detail="Evaluation summary has an unexpected format.",
+            detail="Evaluation summary has an unexpected format."
         )
 
     return data
@@ -159,7 +159,7 @@ def summary():
 def evaluation(
     decision_date: date | None = None,
     limit: int = Query(default=744, ge=1, le=1000),
-    offset: int = Query(default=0, ge=0),
+    offset: int = Query(default=0, ge=0)
 ):
     rows = read_evaluation()
 
@@ -173,7 +173,7 @@ def evaluation(
         "total": len(rows),
         "limit": limit,
         "offset": offset,
-        "items": rows[offset:offset + limit],
+        "items": rows[offset:offset+limit]
     }
 
 
@@ -190,7 +190,7 @@ def daily_metrics():
     for day in sorted(grouped):
         result.append({
             "decision_date": day,
-            **calculate_metrics(grouped[day]),
+            **calculate_metrics(grouped[day])
         })
 
     return {"items": result}
@@ -202,20 +202,20 @@ def forecast_evolution(
         description=(
             "Hourly delivery start, e.g. 2026-01-02T00:00:00Z"
         )
-    ),
+    )
 ):
     try:
         target = parse_utc(delivery_start_utc)
     except (ValueError, TypeError):
         raise HTTPException(
             status_code=400,
-            detail="Provide a valid ISO-8601 UTC timestamp.",
+            detail="Provide a valid ISO-8601 UTC timestamp."
         )
 
     if target.minute != 0 or target.second != 0:
         raise HTTPException(
             status_code=400,
-            detail="The delivery start must be on the hour.",
+            detail="The delivery start must be on the hour."
         )
 
     target_iso = target.isoformat().replace("+00:00", "Z")
@@ -226,13 +226,13 @@ def forecast_evolution(
             row for row in evaluation_rows
             if parse_utc(row["delivery_start_utc"]) == target
         ),
-        None,
+        None
     )
 
     if selected is None:
         raise HTTPException(
             status_code=404,
-            detail="No evaluated delivery interval exists for that time.",
+            detail="No evaluated delivery interval exists for that time."
         )
 
     raw_forecasts = read_json("wind_forecasts.json")
@@ -264,7 +264,7 @@ def forecast_evolution(
             "eligible_at_cutoff": published <= cutoff,
             "selected_for_decision": (
                 published == selected_publish_time
-            ),
+            )
         })
 
     vintages.sort(key=lambda item: item["publish_time_utc"])
@@ -589,5 +589,5 @@ def analysis(
             ),
         },
         "daily": daily,
-        "periods": periods,
+        "periods": periods
     }
